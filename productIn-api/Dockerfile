@@ -5,7 +5,7 @@ FROM node:16 AS builder
 WORKDIR /usr/src/app
 
 # Copiando package.json e package-lock.json para instalar as dependências
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
 # Instalando apenas dependências de produção
 RUN npm install --only=production
