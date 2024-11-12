@@ -1,23 +1,44 @@
-# Usando a imagem Node.js
+# Etapa 1: Build da aplicação
+FROM node:16 AS builder
+
+# Definindo diretório de trabalho
+WORKDIR /usr/src/app
+
+# Copiando package.json e package-lock.json para instalar as dependências
+COPY package*.json ./
+
+# Instalando apenas dependências de produção
+RUN npm install --only=production
+
+# Instalando dependências de desenvolvimento para o build de TypeScript
+RUN npm install --only=dev
+
+# Copiando o restante dos arquivos para a etapa de build
+COPY . .
+
+# Compilando TypeScript para JavaScript
+RUN npm run build
+
+# Etapa 2: Container final para produção
 FROM node:16
 
 # Definindo diretório de trabalho
 WORKDIR /usr/src/app
 
-# Copiando package.json e package-lock.json
-COPY package*.json ./
+# Copiando apenas as dependências de produção do builder
+COPY --from=builder /usr/src/app/node_modules ./node_modules
 
-# Instalando dependências
-RUN npm install
+# Copiando apenas o código compilado
+COPY --from=builder /usr/src/app/dist ./dist
 
-# Copiando código fonte
-COPY . .
+# Copiando o certificado CA
+COPY certs/ca.pem /usr/src/app/certs/ca.pem
 
 # Expondo a porta da API
 EXPOSE 3000
 
-# Definindo a variável padrão NODE_ENV como 'production'
+# Definindo a variável NODE_ENV como production
 ENV NODE_ENV=production
 
 # Comando para rodar a aplicação
-CMD ["npm", "start"]
+CMD ["node", "dist/server.js"]

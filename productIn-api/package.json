@@ -1,12 +1,13 @@
 {
   "name": "productin-api",
   "version": "1.0.0",
-  "description": "API de autenticação com JWT e Swagger",
+  "description": "API do Sistema Product In",
   "main": "src/server.ts",
   "scripts": {
     "start": "cross-env NODE_ENV=production ts-node src/server.ts",
     "dev": "cross-env NODE_ENV=development ts-node src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

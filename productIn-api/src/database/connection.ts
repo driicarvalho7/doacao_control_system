@@ -7,6 +7,7 @@ import {
   POSTGRES_CONNECTION_URL,
   MONGODB_CONNECTION_URL,
 } from "../utils/envConfigs";
+import fs from "fs";
 
 export const connectDB = async (isPostgres: boolean) => {
   const connection = await createConnection({
@@ -16,6 +17,13 @@ export const connectDB = async (isPostgres: boolean) => {
     synchronize: true, // TO DO: Retirar em produção
     logging: true,
     useUnifiedTopology: true,
+    extra: isPostgres
+      ? {
+          ssl: {
+            ca: fs.readFileSync("/usr/src/app/certs/ca.pem"), // Caminho do certificado dentro do container
+          },
+        }
+      : {},
   });
 
   console.log(`Connected to ${isPostgres ? "PostgreSQL" : "MongoDB"}`);
