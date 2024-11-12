@@ -4,14 +4,11 @@ FROM node:16 AS builder
 # Definindo diretório de trabalho
 WORKDIR /usr/src/app
 
-# Copiando package.json e package-lock.json para instalar as dependências
-COPY package.json package-lock.json ./
+# Copiando package.json e package-lock.json para instalar todas as dependências
+COPY package*.json ./
 
-# Instalando apenas dependências de produção
-RUN npm install --only=production
-
-# Instalando dependências de desenvolvimento para o build de TypeScript
-RUN npm install --only=dev
+# Instalando todas as dependências (produção e desenvolvimento)
+RUN npm install
 
 # Copiando o restante dos arquivos para a etapa de build
 COPY . .
