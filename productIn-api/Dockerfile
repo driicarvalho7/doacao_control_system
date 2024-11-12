@@ -31,9 +31,6 @@ COPY --from=builder /usr/src/app/node_modules ./node_modules
 # Copiando apenas o código compilado
 COPY --from=builder /usr/src/app/dist ./dist
 
-# Copiando o certificado CA
-COPY certs/ca.pem /usr/src/app/certs/ca.pem
-
 # Expondo a porta da API
 EXPOSE 3000
 
