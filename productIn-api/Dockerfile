@@ -4,8 +4,8 @@ FROM node:16 AS builder
 # Definindo diretório de trabalho
 WORKDIR /usr/src/app
 
-# Copiando package.json e package-lock.json para instalar as dependências
-COPY package.json package-lock.json ./
+# Copiando package.json e package-lock.json para instalar todas as dependências
+COPY package*.json ./
 
 # Instalando todas as dependências (produção e desenvolvimento)
 RUN npm install
