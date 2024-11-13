@@ -11,7 +11,7 @@ logs
 dist/
 build/
 
-# Arquivos de configuração locais
+# Arquivos de configuração locais (garantir que .env.production está ignorado mas não package.json)
 .env
 .env.development
 .env.production

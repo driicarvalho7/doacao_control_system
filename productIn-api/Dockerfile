@@ -4,14 +4,17 @@ FROM node:16 AS builder
 # Definindo diretório de trabalho
 WORKDIR /usr/src/app
 
+# Argumento de build para o contexto
+ARG CONTEXT=.
+
 # Copiando package.json e package-lock.json para instalar todas as dependências
-COPY package*.json ./
+COPY ${CONTEXT}/package.json ${CONTEXT}/package-lock.json ./
 
 # Instalando todas as dependências (produção e desenvolvimento)
 RUN npm install
 
 # Copiando o restante dos arquivos para a etapa de build
-COPY . .
+COPY ${CONTEXT} .
 
 # Compilando TypeScript para JavaScript
 RUN npm run build
